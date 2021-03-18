@@ -14,6 +14,9 @@ import 'egg-schedule';
 import 'egg-static';
 import 'egg-jsonp';
 import 'egg-view';
+import 'egg-passport';
+import 'egg-passport-github';
+import 'egg-mongoose';
 import { EggPluginItem } from 'egg';
 declare module 'egg' {
   interface EggPlugin {
@@ -29,5 +32,8 @@ declare module 'egg' {
     static?: EggPluginItem;
     jsonp?: EggPluginItem;
     view?: EggPluginItem;
+    passport?: EggPluginItem;
+    passportGithub?: EggPluginItem;
+    mongoose?: EggPluginItem;
   }
 }
