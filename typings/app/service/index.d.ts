@@ -11,6 +11,7 @@ import ExportCategory from '../../../app/service/category';
 import ExportReview from '../../../app/service/review';
 import ExportTag from '../../../app/service/tag';
 import ExportUser from '../../../app/service/user';
+import ExportUtil from '../../../app/service/util';
 
 declare module 'egg' {
   interface IService {
@@ -19,5 +20,6 @@ declare module 'egg' {
     review: AutoInstanceType<typeof ExportReview>;
     tag: AutoInstanceType<typeof ExportTag>;
     user: AutoInstanceType<typeof ExportUser>;
+    util: AutoInstanceType<typeof ExportUtil>;
   }
 }

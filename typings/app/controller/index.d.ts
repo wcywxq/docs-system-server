@@ -7,6 +7,7 @@ import ExportCategory from '../../../app/controller/category';
 import ExportReview from '../../../app/controller/review';
 import ExportTag from '../../../app/controller/tag';
 import ExportUser from '../../../app/controller/user';
+import ExportUtil from '../../../app/controller/util';
 
 declare module 'egg' {
   interface IController {
@@ -15,5 +16,6 @@ declare module 'egg' {
     review: ExportReview;
     tag: ExportTag;
     user: ExportUser;
+    util: ExportUtil;
   }
 }

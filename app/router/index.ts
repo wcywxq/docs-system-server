@@ -1,4 +1,5 @@
 import { Application } from 'egg';
+import utilRouter from './util';
 import articleRouter from './article';
 import categoryRouter from './category';
 import reviewRouter from './review';
@@ -14,6 +15,7 @@ export default (app: Application) => {
   // router.get('/passport/github', github);
   // router.get('/passport/github/callback', github);
 
+  utilRouter(app);
   articleRouter(app);
   categoryRouter(app);
   reviewRouter(app);
