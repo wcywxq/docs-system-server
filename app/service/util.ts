@@ -6,7 +6,8 @@ import * as md5 from 'md5';
 
 const ACCESS_KEY = '2XMp_9K80IY2kb-ESCTg3eJ9QeDLrF5F9-Sv8QTK';
 const SECTET_KEY = '0O892yUWehZUiuG2DTGb0avcaB-CSZrk0uE_sLlP';
-const BUCKET = 'zm-images'; // 要上传的空间名
+// 要上传的空间名
+const BUCKET = 'zm-images';
 // 鉴权对象 mac
 const mac = new qiniu.auth.digest.Mac(ACCESS_KEY, SECTET_KEY);
 // 上传凭证
