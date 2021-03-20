@@ -49,6 +49,7 @@ export default class UtilService extends Service {
           if (respInfo.statusCode === 200) {
             resolve({
               url: `http://zm-images.conjuring.cn/${respBody.key}`,
+              name,
             });
           } else {
             reject(JSON.stringify(respBody));
