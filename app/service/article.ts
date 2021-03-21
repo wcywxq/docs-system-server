@@ -7,7 +7,7 @@ export default class ArticleService extends Service {
   public async getList() {
     const { ctx } = this;
     const result = await ctx.model.Article.find().populate('category').populate('tags');
-    console.log(result);
+    // console.log(result);
     return result;
   }
 
