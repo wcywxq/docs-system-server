@@ -4,7 +4,7 @@ export default class TagController extends Controller {
   public async index() {
     const { ctx } = this;
     try {
-      const result = await ctx.service.tag.getList();
+      const result = await ctx.service.tag.getList(ctx.query);
       ctx.body = {
         resultCode: 0,
         errorMsg: null,
