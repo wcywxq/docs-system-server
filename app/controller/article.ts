@@ -75,4 +75,21 @@ export default class ArticleController extends Controller {
       };
     }
   }
+
+  public async updateStatus() {
+    const { ctx } = this;
+    try {
+      const result = await ctx.service.article.updateStatus(ctx.request.body);
+      ctx.body = {
+        resultCode: 0,
+        errorMsg: null,
+        data: result,
+      };
+    } catch (err) {
+      ctx.body = {
+        resultCode: 1,
+        errorMsg: err,
+      };
+    }
+  }
 }

@@ -43,4 +43,13 @@ export default class ArticleService extends Service {
     const result = await ctx.model.Article.findByIdAndRemove(id);
     return result;
   }
+
+  public async updateStatus(responseBody: any) {
+    const { ctx } = this;
+    console.log(responseBody);
+    const result = await ctx.model.Article.findByIdAndUpdate(responseBody.id, {
+      releaseStatus: responseBody.status,
+    });
+    return result;
+  }
 }

@@ -7,4 +7,5 @@ export default (app: Application) => {
   router.post('/article/add', controller.article.add);
   router.post('/article/update', controller.article.update);
   router.post('/article/delete', controller.article.delete);
+  router.post('/article/update_status', controller.article.updateStatus);
 };
