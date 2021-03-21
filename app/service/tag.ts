@@ -4,7 +4,6 @@ import { Service } from 'egg';
  * Test Service
  */
 export default class TagService extends Service {
-
   public async getList() {
     const { ctx } = this;
     const result = await ctx.model.Tag.find();
@@ -17,12 +16,9 @@ export default class TagService extends Service {
     return result;
   }
 
-  public async addItem() {
-    const { ctx, app: { mongoose } } = this;
-    const result = ctx.model.Tag.create({
-      tag_id: mongoose.Types.ObjectId(),
-      name: 'vue',
-    });
+  public async addItem(responseBody: any) {
+    const { ctx } = this;
+    const result = ctx.model.Tag.create(responseBody);
     return result;
   }
 
@@ -32,6 +28,7 @@ export default class TagService extends Service {
 
   public async deleteItem(id: string) {
     const { ctx } = this;
+    console.log(id);
     const result = await ctx.model.Tag.findByIdAndRemove(id);
     return result;
   }

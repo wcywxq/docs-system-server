@@ -60,7 +60,6 @@ export default class ArticleController extends Controller {
   public async delete() {
     const { ctx } = this;
     const { id } = ctx.request.body;
-    console.log(id);
     try {
       const result = await ctx.service.article.deleteItem(id);
       ctx.body = {

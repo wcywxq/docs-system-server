@@ -37,8 +37,9 @@ export default class TagController extends Controller {
 
   public async add() {
     const { ctx } = this;
+    console.log(ctx.request.body);
     try {
-      const result = await ctx.service.tag.addItem();
+      const result = await ctx.service.tag.addItem(ctx.request.body);
       ctx.body = {
         resultCode: 0,
         errorMsg: null,
@@ -59,8 +60,9 @@ export default class TagController extends Controller {
 
   public async delete() {
     const { ctx } = this;
+    const { id } = ctx.request.body;
     try {
-      const result = await ctx.service.tag.deleteItem(ctx.params.id);
+      const result = await ctx.service.tag.deleteItem(id);
       ctx.body = {
         resultCode: 0,
         errorMsg: null,
