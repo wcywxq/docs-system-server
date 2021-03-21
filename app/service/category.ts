@@ -5,9 +5,14 @@ import { Service } from 'egg';
  */
 export default class CategoryService extends Service {
 
-  public async getList() {
+  public async getList(params: any) {
     const { ctx } = this;
-    const result = await ctx.model.Category.find();
+    console.log(params);
+    // 组合查询条件
+    const mongoParams: any = {};
+    params.name && (mongoParams.name = { $regex: new RegExp(params.name, 'g') });
+    params.createBeginTime !== undefined && params.createEndTime !== undefined && (mongoParams.createTime = { $gt: params.createBeginTime, $lt: params.createEndTime });
+    const result = await ctx.model.Category.find(mongoParams);
     return result;
   }
 
@@ -17,12 +22,9 @@ export default class CategoryService extends Service {
     return result;
   }
 
-  public async addItem() {
-    const { ctx, app: { mongoose } } = this;
-    const result = ctx.model.Category.create({
-      category_id: mongoose.Types.ObjectId(),
-      name: '前端',
-    });
+  public async addItem(responseBody: any) {
+    const { ctx } = this;
+    const result = ctx.model.Category.create(responseBody);
     return result;
   }
 

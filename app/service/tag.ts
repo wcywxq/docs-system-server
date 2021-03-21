@@ -33,7 +33,6 @@ export default class TagService extends Service {
 
   public async deleteItem(id: string) {
     const { ctx } = this;
-    console.log(id);
     const result = await ctx.model.Tag.findByIdAndRemove(id);
     return result;
   }
