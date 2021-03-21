@@ -4,7 +4,7 @@ export default class ArticleController extends Controller {
   public async index() {
     const { ctx } = this;
     try {
-      const result = await ctx.service.article.getList();
+      const result = await ctx.service.article.getList(ctx.query);
       ctx.body = {
         resultCode: 0,
         errorMsg: null,

@@ -3,11 +3,20 @@ import { Service } from 'egg';
  * Test Service
  */
 export default class ArticleService extends Service {
-
-  public async getList() {
+  public async getList(params: any) {
     const { ctx } = this;
-    const result = await ctx.model.Article.find().populate('category').populate('tags');
-    // console.log(result);
+    // 组合查询条件
+    const mongoParams: any = {};
+    params.title && (mongoParams.title = { $regex: new RegExp(params.title, 'g') });
+    params.author && (mongoParams.author = params.author);
+    params.tags && (mongoParams.tags = { $in: params.tags.split(',') });
+    params.category && (mongoParams.category = params.category);
+    params.releaseStatus && (mongoParams.releaseStatus = params.releaseStatus);
+    params.source && (mongoParams.source = params.source);
+    params.createBeginTime && params.createEndTime && (mongoParams.createTime = { $gt: params.createBeginTime, $lt: params.createEndTime });
+    const result = await ctx.model.Article.find(mongoParams)
+      .populate('category')
+      .populate('tags');
     return result;
   }
 
