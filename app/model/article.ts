@@ -8,7 +8,6 @@ export default (app: Application) => {
     title: { type: String, required: true }, // ✅
     content: { type: String, required: true }, // ✅
     desc: { type: String },
-    keywords: [{ type: String }], // ❌
     thumbUrl: { type: String, required: true }, // ✅
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }], // ✅
     category: { type: Schema.Types.ObjectId, ref: 'Category' }, // ✅
