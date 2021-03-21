@@ -5,18 +5,17 @@ import { Service } from 'egg';
 export default class ArticleService extends Service {
   public async getList(params: any) {
     const { ctx } = this;
+    console.log(params);
     // 组合查询条件
     const mongoParams: any = {};
     params.title && (mongoParams.title = { $regex: new RegExp(params.title, 'g') });
-    params.author && (mongoParams.author = params.author);
-    params.tags && (mongoParams.tags = { $in: params.tags.split(',') });
-    params.category && (mongoParams.category = params.category);
-    params.releaseStatus && (mongoParams.releaseStatus = params.releaseStatus);
-    params.source && (mongoParams.source = params.source);
-    params.createBeginTime && params.createEndTime && (mongoParams.createTime = { $gt: params.createBeginTime, $lt: params.createEndTime });
-    const result = await ctx.model.Article.find(mongoParams)
-      .populate('category')
-      .populate('tags');
+    params.author !== undefined && (mongoParams.author = params.author);
+    params.tags !== undefined && (mongoParams.tags = { $in: params.tags.split(',') });
+    params.category !== undefined && (mongoParams.category = params.category);
+    params.releaseStatus !== undefined && (mongoParams.releaseStatus = params.releaseStatus);
+    params.source !== undefined && (mongoParams.source = params.source);
+    params.createBeginTime !== undefined && params.createEndTime !== undefined && (mongoParams.createTime = { $gt: params.createBeginTime, $lt: params.createEndTime });
+    const result = await ctx.model.Article.find(mongoParams).populate('category').populate('tags');
     return result;
   }
 
