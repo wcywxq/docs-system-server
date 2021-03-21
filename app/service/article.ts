@@ -6,7 +6,8 @@ export default class ArticleService extends Service {
 
   public async getList() {
     const { ctx } = this;
-    const result = await ctx.model.Article.find();
+    const result = await ctx.model.Article.find().populate('category').populate('tags');
+    console.log(result);
     return result;
   }
 
@@ -16,21 +17,11 @@ export default class ArticleService extends Service {
     return result;
   }
 
-  public async addItem() {
-    const { ctx, app: { mongoose } } = this;
+  public async addItem(responseBody: any) {
+    const { ctx } = this;
     const result = ctx.model.Article.create({
-      article_id: mongoose.Types.ObjectId(),
-      title: 'test',
-      author: 'test',
-      keywords: [ 'zhangsan', 'lisi' ],
-      thumbUrl: 'test',
-      // tag: { type: [ String ] },
-      // tag_id: { type: [ Schema.Types.ObjectId ], ref: 'Tag' },
-      // category: { type: String },
-      // category_id: { type: Schema.Types.ObjectId, ref: 'Category' },
-      releaseStatus: 0,
-      source: 1,
-      // createTime: { type: Date, default: Date.now() },
+      author: 'magic',
+      ...responseBody,
     });
     return result;
   }

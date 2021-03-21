@@ -38,7 +38,7 @@ export default class ArticleController extends Controller {
   public async add() {
     const { ctx } = this;
     try {
-      const result = await ctx.service.article.addItem();
+      const result = await ctx.service.article.addItem(ctx.request.body);
       ctx.body = {
         resultCode: 0,
         errorMsg: null,
