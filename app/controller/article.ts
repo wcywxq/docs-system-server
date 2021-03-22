@@ -21,7 +21,7 @@ export default class ArticleController extends Controller {
   public async item() {
     const { ctx } = this;
     try {
-      const result = await ctx.service.article.getItem(ctx.params.id);
+      const result = await ctx.service.article.getItem(ctx.query.id);
       ctx.body = {
         resultCode: 0,
         errorMsg: null,
