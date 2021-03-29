@@ -32,6 +32,13 @@ export default (appInfo: EggAppInfo) => {
     options: {},
   };
 
+  // cors
+  config.cors = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+  };
+
   // add your special config in here
   const bizConfig = {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,

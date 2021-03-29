@@ -17,6 +17,7 @@ import 'egg-view';
 import 'egg-passport';
 import 'egg-passport-github';
 import 'egg-mongoose';
+import 'egg-cors';
 import { EggPluginItem } from 'egg';
 declare module 'egg' {
   interface EggPlugin {
@@ -35,5 +36,6 @@ declare module 'egg' {
     passport?: EggPluginItem;
     passportGithub?: EggPluginItem;
     mongoose?: EggPluginItem;
+    cors?: EggPluginItem;
   }
 }
