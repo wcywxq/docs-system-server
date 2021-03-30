@@ -7,8 +7,23 @@ export default class UserService extends Service {
    */
   public async login(requestBody: any) {
     const { ctx } = this;
-    const { username } = requestBody;
-    const result = await ctx.model.User.findOne({ username });
+    const { username, password } = requestBody;
+    const response = await ctx.model.User.findOne({ username });
+    const result = new Promise((resolve, reject) => {
+      if (response) {
+        bcrypt.compare(password, response.password, (err, same) => {
+          if (err) {
+            reject(err);
+          } else if (same) {
+            resolve({ uid: response._id, username: response.username });
+          } else {
+            reject(new Error('密码错误'));
+          }
+        });
+      } else {
+        reject(new Error('账户不存在'));
+      }
+    });
     return result;
   }
   /**
@@ -16,25 +31,33 @@ export default class UserService extends Service {
    */
   public async register(requestBody: any) {
     const { ctx } = this;
-    const { username, password } = requestBody;
+    const { username, password, confirmPassword } = requestBody;
     const response = new Promise((resolve, reject) => {
-      bcrypt.genSalt(10, (err, salt) => {
-        if (err) {
-          reject(err);
-        }
-        bcrypt.hash(password, salt, async (err, hash) => {
+      if (password !== confirmPassword) {
+        reject(new Error('两次输入的密码不一致'));
+      } else {
+        bcrypt.genSalt(10, (err, salt) => {
           if (err) {
             reject(err);
           }
-          const findUser = await ctx.model.User.findOne({ username });
-          if (findUser) {
-            reject(new Error('当前用户已经被注册'));
-          } else {
-            const result = await ctx.model.User.create({ username, password: hash });
-            resolve(result);
-          }
+          bcrypt.hash(password, salt, async (err, hash) => {
+            if (err) {
+              reject(err);
+            }
+            const findUser = await ctx.model.User.findOne({ username });
+            if (findUser) {
+              reject(new Error('当前用户已经被注册'));
+            } else {
+              const result = await ctx.model.User.create({ username, password: hash });
+              if (result) {
+                resolve('注册成功');
+              } else {
+                reject(new Error('注册失败'));
+              }
+            }
+          });
         });
-      });
+      }
     });
     return response;
   }

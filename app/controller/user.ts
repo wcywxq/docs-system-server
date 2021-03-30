@@ -8,11 +8,7 @@ export default class UserController extends Controller {
     const { ctx } = this;
     try {
       const result = await ctx.service.user.login(ctx.request.body);
-      if (result) {
-        ctx.body = { resultCode: 0, errorMsg: null, data: result };
-      } else {
-        throw new Error('账户不存在');
-      }
+      ctx.body = { resultCode: 0, errorMsg: null, data: result };
     } catch (err) {
       ctx.body = { resultCode: 1, errorMsg: err.message };
     }
@@ -22,18 +18,9 @@ export default class UserController extends Controller {
    */
   public async register() {
     const { ctx } = this;
-    const { username, password, confirmPassword } = ctx.request.body;
     try {
-      if (password !== confirmPassword) {
-        throw new Error('两次输入的密码不一致');
-      } else {
-        const result = await ctx.service.user.register({ username, password });
-        if (result) {
-          ctx.body = { resultCode: 0, errorMsg: null, data: '注册成功' };
-        } else {
-          throw new Error('注册失败');
-        }
-      }
+      const result = await ctx.service.user.register(ctx.request.body);
+      ctx.body = { resultCode: 0, errorMsg: null, data: result };
     } catch (err) {
       ctx.body = { resultCode: 1, errorMsg: err.message };
     }
