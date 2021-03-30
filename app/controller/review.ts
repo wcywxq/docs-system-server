@@ -1,7 +1,7 @@
 import { Controller } from 'egg';
 
 export default class ReviewController extends Controller {
-  public async index() {
+  public async all() {
     const { ctx } = this;
     ctx.body = await ctx.service.review.getList('review');
   }

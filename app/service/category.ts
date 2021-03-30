@@ -4,7 +4,9 @@ import { Service } from 'egg';
  * Test Service
  */
 export default class CategoryService extends Service {
-
+  /**
+   * @description 获取全部分类
+   */
   public async getList(params: any) {
     const { ctx } = this;
     console.log(params);
@@ -15,23 +17,31 @@ export default class CategoryService extends Service {
     const result = await ctx.model.Category.find(mongoParams);
     return result;
   }
-
+  /**
+   * @description 获取分类
+   */
   public async getItem(id: string) {
     const { ctx } = this;
     const result = await ctx.model.Category.findById(id);
     return result;
   }
-
+  /**
+   * @description 添加分类
+   */
   public async addItem(responseBody: any) {
     const { ctx } = this;
     const result = ctx.model.Category.create(responseBody);
     return result;
   }
-
+  /**
+   * @description 更新分类信息
+   */
   public async updateItem() {
     return 'update item';
   }
-
+  /**
+   * @description 删除分类
+   */
   public async deleteItem(id: string) {
     const { ctx } = this;
     const result = await ctx.model.Category.findByIdAndRemove(id);

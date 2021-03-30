@@ -26,6 +26,9 @@ type UploadFileData = {
 };
 
 export default class UtilService extends Service {
+  /**
+   * @description 上传文件
+   */
   public async uploadFiles({ name, data }: UploadFileData) {
     const fileName = `${md5(name)}${path.extname(name)}`;
     // eslint-disable-next-line quotes

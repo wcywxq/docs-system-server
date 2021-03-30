@@ -3,9 +3,11 @@ import { Service } from 'egg';
  * Test Service
  */
 export default class ArticleService extends Service {
+  /**
+   * @description 获取全部文章
+   */
   public async getList(params: any) {
     const { ctx } = this;
-    console.log(params);
     // 组合查询条件
     const mongoParams: any = {};
     params.title && (mongoParams.title = { $regex: new RegExp(params.title, 'g') });
@@ -18,13 +20,17 @@ export default class ArticleService extends Service {
     const result = await ctx.model.Article.find(mongoParams).populate('category').populate('tags');
     return result;
   }
-
+  /**
+   * @description 获取文章
+   */
   public async getItem(id: string) {
     const { ctx } = this;
     const result = await ctx.model.Article.findById(id);
     return result;
   }
-
+  /**
+   * @description 添加文章
+   */
   public async addItem(responseBody: any) {
     const { ctx } = this;
     const result = ctx.model.Article.create({
@@ -33,17 +39,23 @@ export default class ArticleService extends Service {
     });
     return result;
   }
-
+  /**
+   * @description 更新文章信息
+   */
   public async updateItem() {
     return 'update item';
   }
-
+  /**
+   * @description 删除文章
+   */
   public async deleteItem(id: string) {
     const { ctx } = this;
     const result = await ctx.model.Article.findByIdAndRemove(id);
     return result;
   }
-
+  /**
+   * @description 更新发布状态
+   */
   public async updateStatus(responseBody: any) {
     const { ctx } = this;
     console.log(responseBody);
