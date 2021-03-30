@@ -12,7 +12,7 @@ export default class TagService extends Service {
     console.log(params);
     // 组合查询条件
     const mongoParams: any = {};
-    params.name && (mongoParams.name = { $regex: new RegExp(params.name, 'g') });
+    params.name !== undefined && (mongoParams.name = { $regex: new RegExp(params.name, 'g') });
     params.createBeginTime !== undefined && params.createEndTime !== undefined && (mongoParams.createTime = { $gt: params.createBeginTime, $lt: params.createEndTime });
     const result = await ctx.model.Tag.find(mongoParams);
     return result;

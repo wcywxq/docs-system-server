@@ -31,33 +31,29 @@ export default class UserService extends Service {
    */
   public async register(requestBody: any) {
     const { ctx } = this;
-    const { username, password, confirmPassword } = requestBody;
+    const { username, password } = requestBody;
     const response = new Promise((resolve, reject) => {
-      if (password !== confirmPassword) {
-        reject(new Error('两次输入的密码不一致'));
-      } else {
-        bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.genSalt(10, (err, salt) => {
+        if (err) {
+          reject(err);
+        }
+        bcrypt.hash(password, salt, async (err, hash) => {
           if (err) {
             reject(err);
           }
-          bcrypt.hash(password, salt, async (err, hash) => {
-            if (err) {
-              reject(err);
-            }
-            const findUser = await ctx.model.User.findOne({ username });
-            if (findUser) {
-              reject(new Error('当前用户已经被注册'));
+          const findUser = await ctx.model.User.findOne({ username });
+          if (findUser) {
+            reject(new Error('当前用户已经被注册'));
+          } else {
+            const result = await ctx.model.User.create({ username, password: hash });
+            if (result) {
+              resolve('注册成功');
             } else {
-              const result = await ctx.model.User.create({ username, password: hash });
-              if (result) {
-                resolve('注册成功');
-              } else {
-                reject(new Error('注册失败'));
-              }
+              reject(new Error('注册失败'));
             }
-          });
+          }
         });
-      }
+      });
     });
     return response;
   }
@@ -73,8 +69,18 @@ export default class UserService extends Service {
   /**
    * @description 获取全部用户
    */
-  public async getList(name: string) {
-    return `hi, ${name}`;
+  public async getList(params: any) {
+    const { ctx } = this;
+    console.log(params);
+    // 组合查询条件
+    const mongoParams: any = {};
+    params.username !== undefined && (mongoParams.username = { $regex: new RegExp(params.username, 'g') });
+    params.email !== undefined && (mongoParams.email = { $regex: new RegExp(params.email, 'g') });
+    params.phone !== undefined && (mongoParams.phone = { $regex: new RegExp(params.phone, 'g') });
+    params.isActive !== undefined && (mongoParams.isActive = JSON.parse(params.isActive)); // 类型转换
+    params.createBeginTime !== undefined && params.createEndTime !== undefined && (mongoParams.createTime = { $gt: params.createBeginTime, $lt: params.createEndTime });
+    const result = await ctx.model.User.find(mongoParams, { password: false });
+    return result;
   }
   /**
    * @description 获取用户
@@ -91,7 +97,10 @@ export default class UserService extends Service {
   /**
    * @description 删除用户
    */
-  public async deleteItem() {
-    return 'delete item';
+  public async deleteItem(id: string) {
+    const { ctx } = this;
+    console.log(id);
+    const result = await ctx.model.User.findByIdAndRemove(id);
+    return result;
   }
 }

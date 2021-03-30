@@ -37,7 +37,12 @@ export default class UserController extends Controller {
    */
   public async all() {
     const { ctx } = this;
-    ctx.body = await ctx.service.user.getList('user');
+    try {
+      const result = await ctx.service.user.getList(ctx.query);
+      ctx.body = { resultCode: 0, errorMsg: null, data: result };
+    } catch (err) {
+      ctx.body = { resultCode: 1, errorMsg: (err as Error).message };
+    }
   }
   /**
    * @description 获取用户
@@ -51,6 +56,12 @@ export default class UserController extends Controller {
    */
   public async delete() {
     const { ctx } = this;
-    ctx.body = await ctx.service.user.deleteItem();
+    const { id } = ctx.request.body;
+    try {
+      const result = await ctx.service.user.deleteItem(id);
+      ctx.body = { resultCode: 0, errorMsg: null, data: result };
+    } catch (err) {
+      ctx.body = { resultCode: 1, errorMsg: (err as Error).message };
+    }
   }
 }

@@ -10,7 +10,7 @@ export default class ArticleService extends Service {
     const { ctx } = this;
     // 组合查询条件
     const mongoParams: any = {};
-    params.title && (mongoParams.title = { $regex: new RegExp(params.title, 'g') });
+    params.title !== undefined && (mongoParams.title = { $regex: new RegExp(params.title, 'g') });
     params.author !== undefined && (mongoParams.author = params.author);
     params.tags !== undefined && (mongoParams.tags = { $in: params.tags.split(',') });
     params.category !== undefined && (mongoParams.category = params.category);
