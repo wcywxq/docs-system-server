@@ -1,4 +1,5 @@
 import { Service } from 'egg';
+import { QueryArticleDto, CreateArticleDto } from '../dto/article.dto';
 /**
  * Test Service
  */
@@ -6,7 +7,7 @@ export default class ArticleService extends Service {
   /**
    * @description 获取全部文章
    */
-  public async getList(params: any) {
+  public async getList(params: QueryArticleDto) {
     const { ctx } = this;
     // 组合查询条件
     const mongoParams: any = {};
@@ -31,12 +32,10 @@ export default class ArticleService extends Service {
   /**
    * @description 添加文章
    */
-  public async addItem(responseBody: any) {
+  public async addItem(responseBody: CreateArticleDto) {
     const { ctx } = this;
-    const result = ctx.model.Article.create({
-      author: 'magic',
-      ...responseBody,
-    });
+    responseBody.author = 'magic';
+    const result = ctx.model.Article.create(responseBody);
     return result;
   }
   /**
@@ -56,7 +55,7 @@ export default class ArticleService extends Service {
   /**
    * @description 更新发布状态
    */
-  public async updateStatus(responseBody: any) {
+  public async updateStatus(responseBody: { id: string; isPublish: 0 | 1 }) {
     const { ctx } = this;
     console.log(responseBody);
     const result = await ctx.model.Article.findByIdAndUpdate(responseBody.id, {

@@ -1,4 +1,5 @@
 import { Service } from 'egg';
+import { CreateCategoryDto, QueryCategoryDto } from '../dto/category.dto';
 
 /**
  * Test Service
@@ -7,7 +8,7 @@ export default class CategoryService extends Service {
   /**
    * @description 获取全部分类
    */
-  public async getList(params: any) {
+  public async getList(params: QueryCategoryDto) {
     const { ctx } = this;
     console.log(params);
     // 组合查询条件
@@ -28,7 +29,7 @@ export default class CategoryService extends Service {
   /**
    * @description 添加分类
    */
-  public async addItem(responseBody: any) {
+  public async addItem(responseBody: CreateCategoryDto) {
     const { ctx } = this;
     const result = ctx.model.Category.create(responseBody);
     return result;

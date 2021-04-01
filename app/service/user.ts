@@ -1,11 +1,11 @@
 import { Service } from 'egg';
 import * as bcrypt from 'bcrypt';
-
+import { CreateUserDto, QueryUserDto } from '../dto/user.dto';
 export default class UserService extends Service {
   /**
    * @description 用户登陆
    */
-  public async login(requestBody: any) {
+  public async login(requestBody: CreateUserDto) {
     const { ctx } = this;
     const { username, password } = requestBody;
     const response = await ctx.model.User.findOne({ username });
@@ -29,7 +29,7 @@ export default class UserService extends Service {
   /**
    * @description 用户注册
    */
-  public async register(requestBody: any) {
+  public async register(requestBody: CreateUserDto) {
     const { ctx } = this;
     const { username, password } = requestBody;
     const response = new Promise((resolve, reject) => {
@@ -69,7 +69,7 @@ export default class UserService extends Service {
   /**
    * @description 获取全部用户
    */
-  public async getList(params: any) {
+  public async getList(params: QueryUserDto) {
     const { ctx } = this;
     console.log(params);
     // 组合查询条件

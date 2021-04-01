@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { Service } from 'egg';
 import * as qiniu from 'qiniu';
 import * as md5 from 'md5';
+import { UploadFileDto } from '../dto/util.dto';
 
 const ACCESS_KEY = '2XMp_9K80IY2kb-ESCTg3eJ9QeDLrF5F9-Sv8QTK';
 const SECTET_KEY = '0O892yUWehZUiuG2DTGb0avcaB-CSZrk0uE_sLlP';
@@ -20,16 +21,11 @@ const uploadToken = putPolicy.uploadToken(mac);
 const config: any = new qiniu.conf.Config();
 config.zone = qiniu.zone.Zone_z0; // Zone_z0 -> 华东
 
-type UploadFileData = {
-  name: string;
-  data: string;
-};
-
 export default class UtilService extends Service {
   /**
    * @description 上传文件
    */
-  public async uploadFiles({ name, data }: UploadFileData) {
+  public async uploadFiles({ name, data }: UploadFileDto) {
     const fileName = `${md5(name)}${path.extname(name)}`;
     // eslint-disable-next-line quotes
     const localFilePath = path.join(__dirname, "../public/uploads", fileName);

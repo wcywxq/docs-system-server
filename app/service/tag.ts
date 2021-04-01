@@ -1,4 +1,5 @@
 import { Service } from 'egg';
+import { CreateTagDto, QueryTagDto } from '../dto/tag.dto';
 
 /**
  * Test Service
@@ -7,7 +8,7 @@ export default class TagService extends Service {
   /**
    * @description 获取全部标签
    */
-  public async getList(params: any) {
+  public async getList(params: QueryTagDto) {
     const { ctx } = this;
     console.log(params);
     // 组合查询条件
@@ -28,7 +29,7 @@ export default class TagService extends Service {
   /**
    * @description 添加标签
    */
-  public async addItem(responseBody: any) {
+  public async addItem(responseBody: CreateTagDto) {
     const { ctx } = this;
     const result = ctx.model.Tag.create(responseBody);
     return result;
