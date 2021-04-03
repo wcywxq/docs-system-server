@@ -10,11 +10,10 @@ export default function auth(app: Application) {
     // token 解密
     jwt.verify(token, TOKEN_SECRET_KEY, (err, decoded) => {
       if (err) {
-        throw err;
+        console.log(err);
       } else {
         const current = Math.floor(Date.now() / 1000);
         const { data, exp } = decoded as any;
-        console.log(current, exp);
         if (current <= exp) {
           result = data || {};
         }

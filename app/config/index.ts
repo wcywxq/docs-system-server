@@ -9,4 +9,4 @@ export const EXPRIES = 7200;
 // token secretKey
 export const TOKEN_SECRET_KEY = 'conjuring';
 // token expries
-export const TOKEN_EXPRIES = '1h';
+export const TOKEN_EXPRIES = '8h';
