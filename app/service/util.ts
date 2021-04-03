@@ -4,28 +4,29 @@ import { Service } from 'egg';
 import * as qiniu from 'qiniu';
 import * as md5 from 'md5';
 import { UploadFileDto } from '../dto/util.dto';
-
-const ACCESS_KEY = '2XMp_9K80IY2kb-ESCTg3eJ9QeDLrF5F9-Sv8QTK';
-const SECTET_KEY = '0O892yUWehZUiuG2DTGb0avcaB-CSZrk0uE_sLlP';
-// 要上传的空间名
-const BUCKET = 'zm-images';
-// 鉴权对象 mac
-const mac = new qiniu.auth.digest.Mac(ACCESS_KEY, SECTET_KEY);
-// 上传凭证
-const options = {
-  scope: BUCKET,
-};
-const putPolicy = new qiniu.rs.PutPolicy(options);
-// 上传文件 token
-const uploadToken = putPolicy.uploadToken(mac);
-const config: any = new qiniu.conf.Config();
-config.zone = qiniu.zone.Zone_z0; // Zone_z0 -> 华东
+import { ACCESS_KEY, SECTET_KEY, BUCKET, EXPRIES } from '../config';
 
 export default class UtilService extends Service {
   /**
    * @description 上传文件
    */
   public async uploadFiles({ name, data }: UploadFileDto) {
+    // 鉴权对象 mac
+    const mac = new qiniu.auth.digest.Mac(ACCESS_KEY, SECTET_KEY);
+    // 上传凭证
+    const options = {
+      scope: BUCKET,
+      expries: EXPRIES, // 上传凭证有效期
+    };
+    // 生成上传凭证
+    const putPolicy = new qiniu.rs.PutPolicy(options);
+    // 上传文件 token (每次调用时重新获取，避免过过期)
+    const uploadToken = putPolicy.uploadToken(mac);
+    // 服务端上传配置
+    const config: any = new qiniu.conf.Config();
+    config.zone = qiniu.zone.Zone_z0; // Zone_z0 -> 华东
+
+    // 文件名
     const fileName = `${md5(name)}${path.extname(name)}`;
     // eslint-disable-next-line quotes
     const localFilePath = path.join(__dirname, "../public/uploads", fileName);
@@ -47,7 +48,7 @@ export default class UtilService extends Service {
           }
           if (respInfo.statusCode === 200) {
             resolve({
-              url: `http://zm-images.conjuring.cn/${respBody.key}`,
+              url: `http://${BUCKET}.conjuring.cn/${respBody.key}`,
               name,
             });
           } else {
