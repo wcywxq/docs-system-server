@@ -4,7 +4,7 @@ import { Service } from 'egg';
 import * as qiniu from 'qiniu';
 import * as md5 from 'md5';
 import { UploadFileDto } from '../dto/util.dto';
-import { ACCESS_KEY, SECTET_KEY, BUCKET, EXPRIES } from '../config';
+import { ACCESS_KEY, SECRET_KEY, BUCKET, EXPRIES } from '../config';
 
 export default class UtilService extends Service {
   /**
@@ -12,7 +12,7 @@ export default class UtilService extends Service {
    */
   public async uploadFiles({ name, data }: UploadFileDto) {
     // 鉴权对象 mac
-    const mac = new qiniu.auth.digest.Mac(ACCESS_KEY, SECTET_KEY);
+    const mac = new qiniu.auth.digest.Mac(ACCESS_KEY, SECRET_KEY);
     // 上传凭证
     const options = {
       scope: BUCKET,

@@ -1,12 +1,14 @@
 import { Service } from 'egg';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 import { CreateUserDto, QueryUserDto } from '../dto/user.dto';
+import { TOKEN_SECRET_KEY, TOKEN_EXPRIES } from '../config/index';
 export default class UserService extends Service {
   /**
    * @description 用户登陆
    */
   public async login(requestBody: CreateUserDto) {
-    const { ctx } = this;
+    const { ctx, app } = this;
     const { username, password } = requestBody;
     const response = await ctx.model.User.findOne({ username });
     const result = new Promise((resolve, reject) => {
@@ -15,7 +17,18 @@ export default class UserService extends Service {
           if (err) {
             reject(err);
           } else if (same) {
-            resolve({ uid: response._id, username: response.username });
+            // 登陆成功
+            const token = jwt.sign(
+              {
+                data: {
+                  userId: response._id,
+                },
+              },
+              TOKEN_SECRET_KEY,
+              { expiresIn: TOKEN_EXPRIES },
+            );
+            app.redis.set(response._id, token);
+            resolve({ uid: response._id, username: response.username, token });
           } else {
             reject(new Error('密码错误'));
           }

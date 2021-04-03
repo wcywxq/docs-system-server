@@ -1,6 +1,7 @@
 import { Application } from 'egg';
+import { AuthMiddleWare } from './index';
 
-export default (app: Application) => {
+export default (app: Application, auth: AuthMiddleWare) => {
   const { controller, router } = app;
-  router.post('/upload', controller.util.uploadFiles);
+  router.post('/upload', auth, controller.util.uploadFiles);
 };
