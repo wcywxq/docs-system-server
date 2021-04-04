@@ -28,7 +28,7 @@ export default class UserService extends Service {
               { expiresIn: TOKEN_EXPRIES },
             );
             app.redis.set(response._id, token);
-            resolve({ uid: response._id, username: response.username, token });
+            resolve({ userId: response._id, username: response.username, token });
           } else {
             reject(new Error('密码错误'));
           }
