@@ -9,8 +9,8 @@ export default class UserService extends Service {
    */
   public async login(requestBody: CreateUserDto) {
     const { ctx, app } = this;
-    const { username, password } = requestBody;
-    const response = await ctx.model.User.findOne({ username });
+    const { userName, password } = requestBody;
+    const response = await ctx.model.User.findOne({ userName });
     const result = new Promise((resolve, reject) => {
       if (response) {
         bcrypt.compare(password, response.password, (err, same) => {
@@ -28,7 +28,7 @@ export default class UserService extends Service {
               { expiresIn: TOKEN_EXPRIES },
             );
             app.redis.set(response._id, token);
-            resolve({ userId: response._id, username: response.username, token });
+            resolve({ userId: response._id, userName: response.userName, token });
           } else {
             reject(new Error('密码错误'));
           }
@@ -44,7 +44,7 @@ export default class UserService extends Service {
    */
   public async register(requestBody: CreateUserDto) {
     const { ctx } = this;
-    const { username, password } = requestBody;
+    const { userName, password } = requestBody;
     const response = new Promise((resolve, reject) => {
       bcrypt.genSalt(10, (err, salt) => {
         if (err) {
@@ -54,11 +54,11 @@ export default class UserService extends Service {
           if (err) {
             reject(err);
           }
-          const findUser = await ctx.model.User.findOne({ username });
+          const findUser = await ctx.model.User.findOne({ userName });
           if (findUser) {
             reject(new Error('当前用户已经被注册'));
           } else {
-            const result = await ctx.model.User.create({ username, password: hash });
+            const result = await ctx.model.User.create({ userName, password: hash });
             if (result) {
               resolve('注册成功');
             } else {
@@ -75,8 +75,8 @@ export default class UserService extends Service {
    */
   public async updatePassWord(responseBody: any) {
     const { ctx } = this;
-    const { username, password } = responseBody;
-    const response = await ctx.model.User.updateOne({ username }, { password });
+    const { userName, password } = responseBody;
+    const response = await ctx.model.User.updateOne({ userName }, { password });
     return response;
   }
   /**
@@ -87,7 +87,7 @@ export default class UserService extends Service {
     console.log(params);
     // 组合查询条件
     const mongoParams: any = {};
-    params.username !== undefined && (mongoParams.username = { $regex: new RegExp(params.username, 'g') });
+    params.userName !== undefined && (mongoParams.userName = { $regex: new RegExp(params.userName, 'g') });
     params.email !== undefined && (mongoParams.email = { $regex: new RegExp(params.email, 'g') });
     params.phone !== undefined && (mongoParams.phone = { $regex: new RegExp(params.phone, 'g') });
     params.isActive !== undefined && (mongoParams.isActive = JSON.parse(params.isActive)); // 类型转换

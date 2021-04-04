@@ -1,5 +1,5 @@
 export type QueryUserDto = Partial<{
-  username: string;
+  userName: string;
   email: string;
   phone: string;
   isActive: string; // 需手动parse为boolean
@@ -8,7 +8,7 @@ export type QueryUserDto = Partial<{
 }>;
 
 export type CreateUserDto = {
-  username: string;
+  userName: string;
   password: string;
 };
 
