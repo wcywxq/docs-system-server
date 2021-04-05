@@ -42,7 +42,13 @@ export default class ArticleController extends Controller {
    */
   public async update() {
     const { ctx } = this;
-    ctx.body = await ctx.service.article.updateItem();
+    const { id, ...responseBody } = ctx.request.body;
+    try {
+      const result = await ctx.service.article.updateItem(id, responseBody);
+      ctx.body = { resultCode: 0, errorMsg: null, data: result };
+    } catch (err) {
+      ctx.body = { resultCode: 1, errorMsg: (err as Error).message };
+    }
   }
   /**
    * @description 删除文章
@@ -62,8 +68,9 @@ export default class ArticleController extends Controller {
    */
   public async updateStatus() {
     const { ctx } = this;
+    const { id, ...responseBody } = ctx.request.body;
     try {
-      const result = await ctx.service.article.updateStatus(ctx.request.body);
+      const result = await ctx.service.article.updateStatus(id, responseBody);
       ctx.body = { resultCode: 0, errorMsg: null, data: result };
     } catch (err) {
       ctx.body = { resultCode: 1, errorMsg: (err as Error).message };

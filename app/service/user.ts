@@ -96,18 +96,6 @@ export default class UserService extends Service {
     return result;
   }
   /**
-   * @description 获取用户
-   */
-  public async getItem() {
-    return 'get item';
-  }
-  /**
-   * @description 更新用户信息
-   */
-  public async updateItem() {
-    return 'update item';
-  }
-  /**
    * @description 删除用户
    */
   public async deleteItem(id: string) {

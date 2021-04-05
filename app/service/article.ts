@@ -1,5 +1,5 @@
 import { Service } from 'egg';
-import { QueryArticleDto, CreateArticleDto } from '../dto/article.dto';
+import { QueryArticleDto, CreateArticleDto, UpdateArticleDto, UpdateArticlePublishDto } from '../dto/article.dto';
 /**
  * Test Service
  */
@@ -41,8 +41,10 @@ export default class ArticleService extends Service {
   /**
    * @description 更新文章信息
    */
-  public async updateItem() {
-    return 'update item';
+  public async updateItem(id: string, responseBody: UpdateArticleDto) {
+    const { ctx } = this;
+    const result = ctx.model.Tag.findByIdAndUpdate(id, responseBody);
+    return result;
   }
   /**
    * @description 删除文章
@@ -55,12 +57,9 @@ export default class ArticleService extends Service {
   /**
    * @description 更新发布状态
    */
-  public async updateStatus(responseBody: { id: string; isPublish: 0 | 1 }) {
+  public async updateStatus(id: string, responseBody: UpdateArticlePublishDto) {
     const { ctx } = this;
-    console.log(responseBody);
-    const result = await ctx.model.Article.findByIdAndUpdate(responseBody.id, {
-      isPublish: responseBody.isPublish,
-    });
+    const result = await ctx.model.Article.findByIdAndUpdate(id, responseBody);
     return result;
   }
 }

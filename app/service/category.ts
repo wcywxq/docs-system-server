@@ -1,5 +1,5 @@
 import { Service } from 'egg';
-import { CreateCategoryDto, QueryCategoryDto } from '../dto/category.dto';
+import { CreateCategoryDto, QueryCategoryDto, UpdateCategoryDto } from '../dto/category.dto';
 
 /**
  * Test Service
@@ -37,8 +37,10 @@ export default class CategoryService extends Service {
   /**
    * @description 更新分类信息
    */
-  public async updateItem() {
-    return 'update item';
+  public async updateItem(id: string, responseBody: UpdateCategoryDto) {
+    const { ctx } = this;
+    const result = ctx.model.Tag.findByIdAndUpdate(id, responseBody);
+    return result;
   }
   /**
    * @description 删除分类

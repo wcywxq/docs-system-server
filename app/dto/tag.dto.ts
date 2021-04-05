@@ -7,3 +7,5 @@ export type QueryTagDto = Partial<{
 export type CreateTagDto = {
   name: string;
 };
+
+export type UpdateTagDto = CreateTagDto;

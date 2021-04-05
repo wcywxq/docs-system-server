@@ -7,3 +7,5 @@ export type QueryCategoryDto = Partial<{
 export type CreateCategoryDto = {
   name: string;
 };
+
+export type UpdateCategoryDto = CreateCategoryDto;

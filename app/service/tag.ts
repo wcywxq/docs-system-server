@@ -1,5 +1,5 @@
 import { Service } from 'egg';
-import { CreateTagDto, QueryTagDto } from '../dto/tag.dto';
+import { CreateTagDto, QueryTagDto, UpdateTagDto } from '../dto/tag.dto';
 
 /**
  * Test Service
@@ -37,8 +37,10 @@ export default class TagService extends Service {
   /**
    * @description 更新标签信息
    */
-  public async updateItem() {
-    return 'update item';
+  public async updateItem(id: string, responseBody: UpdateTagDto) {
+    const { ctx } = this;
+    const result = ctx.model.Tag.findByIdAndUpdate(id, responseBody);
+    return result;
   }
   /**
    * @description 删除标签

@@ -18,3 +18,9 @@ export type CreateArticleDto = {
   content: string;
   thumbUrl: string;
 };
+
+export type UpdateArticleDto = CreateArticleDto;
+
+export type UpdateArticlePublishDto = {
+  isPublish: 0 | 1;
+};

@@ -43,7 +43,13 @@ export default class TagController extends Controller {
    */
   public async update() {
     const { ctx } = this;
-    ctx.body = await ctx.service.tag.updateItem();
+    const { id, ...responseBody } = ctx.request.body;
+    try {
+      const result = await ctx.service.tag.updateItem(id, responseBody);
+      ctx.body = { resultCode: 0, errorMsg: null, data: result };
+    } catch (err) {
+      ctx.body = { resultCode: 1, errorMsg: (err as Error).message };
+    }
   }
   /**
    * @description 删除标签

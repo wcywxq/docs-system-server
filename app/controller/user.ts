@@ -45,13 +45,6 @@ export default class UserController extends Controller {
     }
   }
   /**
-   * @description 获取用户
-   */
-  public async item() {
-    const { ctx } = this;
-    ctx.body = await ctx.service.user.getItem();
-  }
-  /**
    * @description 删除用户
    */
   public async delete() {
