@@ -9,7 +9,7 @@ export default (app: Application, auth: AuthMiddleWare) => {
   router.post('/user/delete', auth, controller.user.delete);
   // router.get('/user/logout', controller.user.index);
 
-  router.get('/user/:id', auth, controller.user.item);
+  // router.get('/user/:id', auth, controller.user.item);
   // router.post('/user/add', controller.user.add);
   // router.post('/user/update', controller.user.update);
 };
