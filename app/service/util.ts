@@ -14,18 +14,20 @@ export default class UtilService extends Service {
     // 鉴权对象 mac
     const mac = new qiniu.auth.digest.Mac(ACCESS_KEY, SECRET_KEY);
     // 上传凭证
-    const options = {
+    const options: qiniu.rs.PutPolicyOptions = {
       scope: BUCKET,
-      expries: EXPRIES, // 上传凭证有效期
+      // 上传凭证有效期
+      expires: EXPRIES,
     };
     // 生成上传凭证
     const putPolicy = new qiniu.rs.PutPolicy(options);
     // 上传文件 token (每次调用时重新获取，避免过过期)
     const uploadToken = putPolicy.uploadToken(mac);
     // 服务端上传配置
-    const config: any = new qiniu.conf.Config();
-    config.zone = qiniu.zone.Zone_z0; // Zone_z0 -> 华东
-
+    const config = new qiniu.conf.Config({
+      // Zone_z0 -> 华东
+      zone: qiniu.zone.Zone_z0,
+    });
     // 文件名
     const fileName = `${md5(name)}${path.extname(name)}`;
     // eslint-disable-next-line quotes

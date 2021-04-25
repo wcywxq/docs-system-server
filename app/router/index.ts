@@ -1,10 +1,6 @@
 import { Application, Context } from 'egg';
-import utilRouter from './util';
-import articleRouter from './article';
-import categoryRouter from './category';
-import reviewRouter from './review';
-import tagRouter from './tag';
-import userRouter from './user';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export type AuthMiddleWare = (ctx: Context<any>, next: () => Promise<any>) => Promise<void>;
 
@@ -19,10 +15,10 @@ export default (app: Application) => {
 
   // 鉴权中间件
   const authMiddleware: AuthMiddleWare = app.middleware.auth(app);
-  utilRouter(app, authMiddleware);
-  articleRouter(app, authMiddleware);
-  categoryRouter(app, authMiddleware);
-  reviewRouter(app, authMiddleware);
-  tagRouter(app, authMiddleware);
-  userRouter(app, authMiddleware);
+  fs.readdir(path.resolve(__dirname, './routes'), (err, files) => {
+    if (err) throw err;
+    files.forEach(file => {
+      require(path.resolve(__dirname, './routes', file)).default(app, authMiddleware);
+    });
+  });
 };
